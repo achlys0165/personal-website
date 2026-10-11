@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, type ObjectDirective } from 'vue';
 import { categories, courses, experience, profile, projects, securityActivities, skillGroups, type Category, type Project } from './profile';
+import TurnstileWidget from './components/TurnstileWidget.vue';
 
 const mobileOpen = ref(false);
 const projectCategory = ref<Category>('Cybersecurity');
@@ -17,7 +18,15 @@ const terminalCleared = ref(false);
 const terminalEntries = ref<{ command: string; lines: string[]; warning: boolean }[]>([]);
 const currentYear = new Date().getFullYear();
 const contactTopics = [...categories, 'Work Opportunity', 'General Message'];
-const contact = reactive({ name: '', email: '', topic: 'Web App', message: '' });
+const contact = reactive({ name: '', email: '', topic: 'Web App', message: '', website: '' });
+const turnstileSiteKey = (import.meta.env.VITE_TURNSTILE_SITE_KEY ?? '').trim();
+const turnstile = ref<InstanceType<typeof TurnstileWidget> | null>(null);
+const contactToken = ref('');
+const contactSending = ref(false);
+const contactStatus = ref('');
+const contactSucceeded = ref(false);
+const retrySeconds = ref(0);
+let retryTimer: ReturnType<typeof setInterval> | undefined;
 const copyStatus = ref('');
 let copyTimer: ReturnType<typeof setTimeout> | undefined;
 
@@ -27,10 +36,39 @@ const focusAreas = [
   { title: 'Web Apps', description: 'Applications for businesses, ministry teams, and learning, built with modern web tools.' },
 ];
 
-function handleContactSubmit() {
-  const subject = `${contact.topic} — ${contact.name.trim()}`;
-  const body = `Name: ${contact.name.trim()}\nEmail: ${contact.email.trim()}\nTopic: ${contact.topic}\n\n${contact.message.trim()}`;
-  window.location.href = `mailto:${profile.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+async function handleContactSubmit() {
+  if (contactSending.value || retrySeconds.value || !contactToken.value) return;
+  contactSending.value = true;
+  contactSucceeded.value = false;
+  contactStatus.value = '';
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...contact, token: contactToken.value }),
+      signal: AbortSignal.timeout(30_000),
+    });
+    const result = await response.json() as { message?: string };
+    if (response.status === 429) {
+      retrySeconds.value = Math.min(3600, Math.max(1, Number(response.headers.get('Retry-After')) || 600));
+      if (retryTimer) clearInterval(retryTimer);
+      retryTimer = setInterval(() => { if (--retrySeconds.value <= 0 && retryTimer) clearInterval(retryTimer); }, 1000);
+    }
+    contactStatus.value = typeof result.message === 'string' ? result.message : 'Unable to send your message. Please try again later or use the email link.';
+    if (response.ok) {
+      contactSucceeded.value = true;
+      contact.name = '';
+      contact.email = '';
+      contact.message = '';
+      contact.website = '';
+    }
+  } catch {
+    contactStatus.value = 'We could not confirm that your message was sent. Please use the email link if you need to reach me.';
+  } finally {
+    contactSending.value = false;
+    turnstile.value?.reset();
+    contactToken.value = '';
+  }
 }
 
 async function copyEmail() {
@@ -186,6 +224,7 @@ onMounted(() => {
   document.addEventListener('keydown', handleKeydown);
 });
 onBeforeUnmount(() => {
+  if (retryTimer) clearInterval(retryTimer);
   if (copyTimer) clearTimeout(copyTimer);
   revealObserver?.disconnect();
   window.removeEventListener('mousemove', moveCursor);
@@ -412,12 +451,16 @@ onBeforeUnmount(() => {
         <div class="contact-grid">
           <div class="contact-card reveal-on-scroll" v-reveal>
             <form id="contactForm" @submit.prevent="handleContactSubmit">
-              <div class="form-group"><label for="contactName" class="form-label">Your Name *</label><input id="contactName" v-model="contact.name" class="form-input" autocomplete="name" placeholder="Your name" required></div>
-              <div class="form-group"><label for="contactEmail" class="form-label">Email Address *</label><input id="contactEmail" v-model="contact.email" type="email" class="form-input" autocomplete="email" placeholder="Your email address" required></div>
-              <div class="form-group"><label for="contactTopic" class="form-label">What’s it about?</label><select id="contactTopic" v-model="contact.topic" class="form-select"><option v-for="topic in contactTopics" :key="topic">{{ topic }}</option></select></div>
-              <div class="form-group"><label for="contactMessage" class="form-label">Message *</label><textarea id="contactMessage" v-model="contact.message" class="form-textarea" placeholder="Tell me about your project or idea…" required></textarea></div>
-              <button type="submit" class="btn btn-primary contact-submit">Open Email Draft <span aria-hidden="true">↗</span></button>
-              <p class="contact-note">Opens your email app with the details above.</p>
+              <div class="form-group"><label for="contactName" class="form-label">Your Name *</label><input id="contactName" v-model="contact.name" class="form-input" autocomplete="name" placeholder="Your name" maxlength="100" :disabled="contactSending" required></div>
+              <div class="form-group"><label for="contactEmail" class="form-label">Email Address *</label><input id="contactEmail" v-model="contact.email" type="email" class="form-input" autocomplete="email" placeholder="Your email address" maxlength="254" :disabled="contactSending" required></div>
+              <div class="form-group"><label for="contactTopic" class="form-label">What’s it about?</label><select id="contactTopic" v-model="contact.topic" class="form-select" :disabled="contactSending"><option v-for="topic in contactTopics" :key="topic">{{ topic }}</option></select></div>
+              <div class="form-group"><label for="contactMessage" class="form-label">Message *</label><textarea id="contactMessage" v-model="contact.message" class="form-textarea" placeholder="Tell me about your project or idea…" minlength="10" maxlength="5000" :disabled="contactSending" required></textarea></div>
+              <div class="contact-honeypot" aria-hidden="true"><label for="contactWebsite">Leave this empty</label><input id="contactWebsite" v-model="contact.website" tabindex="-1" autocomplete="off"></div>
+              <TurnstileWidget v-if="turnstileSiteKey" ref="turnstile" :site-key="turnstileSiteKey" @token="contactToken = $event" />
+              <button type="submit" class="btn btn-primary contact-submit" :disabled="contactSending || !contactToken || retrySeconds > 0" :aria-busy="contactSending">{{ contactSending ? 'Sending…' : retrySeconds > 0 ? `Try again in ${retrySeconds}s` : 'Send Message' }} <span v-if="!contactSending" aria-hidden="true">↗</span></button>
+              <p v-if="!turnstileSiteKey" class="contact-note">The contact form is temporarily unavailable. You can still reach me using the email link.</p>
+              <p v-else class="contact-note">Your message goes directly to my inbox. Your email is used so I can reply.</p>
+              <p class="contact-note" :class="contactSucceeded ? 'contact-status-success' : 'contact-status-error'" role="status" aria-live="polite">{{ contactStatus }}</p>
             </form>
           </div>
           <div class="direct-channels reveal-on-scroll" v-reveal>
