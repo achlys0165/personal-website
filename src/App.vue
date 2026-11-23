@@ -1,9 +1,51 @@
 <script setup lang="ts">
-import { onBeforeUnmount, ref } from "vue";
+import { onBeforeUnmount, ref, type ObjectDirective } from "vue";
 import { courses, profile, securityActivities } from "./profile";
-import { appliedSkills, caseStudies } from "./caseStudies";
+import { caseStudies } from "./caseStudies";
+import EvidenceBoard from "./components/EvidenceBoard.vue";
+import SkillGraph from "./components/SkillGraph.vue";
+import ExperienceLog from "./components/ExperienceLog.vue";
+import FlagHunt from "./components/FlagHunt.vue";
+import RankLabel from "./components/RankLabel.vue";
+import { portfolioFlag } from "./visualState";
 
 const mobileOpen = ref(false);
+const marqueePaused = ref(false);
+const vInview: ObjectDirective<HTMLElement> = {
+  mounted(el) {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries)
+        entry.target.classList.toggle("is-inview", entry.isIntersecting);
+    });
+    observer.observe(el);
+    (el as HTMLElement & { cleanup?: () => void }).cleanup = () =>
+      observer.disconnect();
+  },
+  unmounted(el) {
+    (el as HTMLElement & { cleanup?: () => void }).cleanup?.();
+  },
+};
+function tilt(event: PointerEvent) {
+  if (
+    window.matchMedia("(prefers-reduced-motion: reduce), (hover: none)").matches
+  )
+    return;
+  const el = event.currentTarget as HTMLElement;
+  const rect = el.getBoundingClientRect();
+  el.style.setProperty(
+    "--tilt-x",
+    ((event.clientY - rect.top) / rect.height) * -5 + 2.5 + "deg",
+  );
+  el.style.setProperty(
+    "--tilt-y",
+    ((event.clientX - rect.left) / rect.width) * 5 - 2.5 + "deg",
+  );
+}
+function untilt(event: PointerEvent) {
+  const el = event.currentTarget as HTMLElement;
+  el.style.setProperty("--tilt-x", "0deg");
+  el.style.setProperty("--tilt-y", "0deg");
+}
 const copyStatus = ref("");
 let copyTimer: ReturnType<typeof setTimeout> | undefined;
 async function copyEmail() {
@@ -64,16 +106,24 @@ onBeforeUnmount(() => {
         <span>Computer Science / Asia Pacific College</span
         ><span>Expected graduation 2028</span>
       </div>
-      <h1 id="hero-title">Jan Sultan<span class="name-period">.</span></h1>
-      <div class="hero-bottom">
-        <p class="hero-introduction">
-          I’m a Cybersecurity & Forensics student at Asia Pacific College,
-          building software for clients and TOP Church while competing in CTFs.
-        </p>
-        <div class="hero-actions">
-          <a class="button" href="#projects">View work</a
-          ><a class="text-link" href="#contact">Contact me</a>
+      <div class="hero-scene">
+        <div class="hero-copy">
+          <h1 id="hero-title">
+            Jan <span>Sultan<span class="name-period">.</span></span>
+          </h1>
+          <div class="hero-bottom">
+            <p class="hero-introduction">
+              I’m a Cybersecurity &amp; Forensics student at Asia Pacific
+              College, building software for clients and TOP Church while
+              competing in CTFs.
+            </p>
+            <div class="hero-actions">
+              <a class="button" href="#projects">View work</a
+              ><a class="text-link" href="#contact">Contact me</a>
+            </div>
+          </div>
         </div>
+        <EvidenceBoard v-inview :data-evidence="portfolioFlag" />
       </div>
       <div class="hero-index metadata">
         <span>A record of software built and challenges investigated.</span
@@ -98,6 +148,7 @@ onBeforeUnmount(() => {
         :id="study.project.id"
         :key="study.project.id"
         class="case-study"
+        v-inview
         :aria-labelledby="`case-title-${index}`"
       >
         <div class="case-index metadata">
@@ -157,7 +208,14 @@ onBeforeUnmount(() => {
               Public link pending
             </p>
           </div>
-          <figure class="project-exhibit">
+          <figure
+            class="project-exhibit"
+            @pointermove="tilt"
+            @pointerleave="untilt"
+          >
+            <div class="frame-chrome" aria-hidden="true">
+              <i></i><i></i><i></i><span>{{ study.project.title }}</span>
+            </div>
             <div class="exhibit-head metadata">
               <span>{{
                 study.project.id === "hymn"
@@ -166,7 +224,7 @@ onBeforeUnmount(() => {
                     ? "JSP Engineering"
                     : study.project.title
               }}</span
-              ><span>Workflow</span>
+              ><span>Scope diagram</span>
             </div>
             <div class="workflow" :class="`workflow-${index}`">
               <div
@@ -178,11 +236,23 @@ onBeforeUnmount(() => {
                 ><span>{{ step }}</span>
               </div>
             </div>
+            <div class="asset-pending">
+              <span class="metadata">Asset pending</span>
+              <p>
+                {{
+                  index === 0
+                    ? "Screenshots and a slide-generation recording"
+                    : index === 1
+                      ? "A real sample report and recorded run"
+                      : "Approved project screenshots"
+                }}
+              </p>
+            </div>
             <figcaption>{{ study.caption }}</figcaption>
           </figure>
         </div>
       </article>
-      <div class="supporting-work">
+      <div id="supporting-work" class="supporting-work">
         <p class="eyebrow">Also built for ministry teams</p>
         <p>
           <strong>Music Ministry Management</strong> brings together musician
@@ -197,6 +267,7 @@ onBeforeUnmount(() => {
     <section
       id="experience"
       class="community-section"
+      v-inview
       aria-labelledby="community-title"
     >
       <div class="wrap">
@@ -208,6 +279,21 @@ onBeforeUnmount(() => {
           <p>
             I compete in CTFs and take part in the local security community.
           </p>
+        </div>
+        <div class="event-marquee" :class="{ paused: marqueePaused }">
+          <div class="event-track" aria-hidden="true">
+            <span v-for="copy in 2" :key="copy"
+              >JISSA–APC × Resecurity <b>/</b> SEEN 2025 <b>/</b> Hack the Beat
+              <b>/</b> PhilSec 2026 <b>/</b></span
+            >
+          </div>
+          <button
+            type="button"
+            @click="marqueePaused = !marqueePaused"
+            :aria-pressed="marqueePaused"
+          >
+            {{ marqueePaused ? "Resume event motion" : "Pause event motion" }}
+          </button>
         </div>
         <div
           class="ledger-scroll"
@@ -237,7 +323,10 @@ onBeforeUnmount(() => {
                   }}<span class="organizer">{{ activity.organization }}</span>
                 </th>
                 <td :class="{ placement: !!activity.achievement }">
-                  {{ activity.achievement || "Student volunteer" }}
+                  <RankLabel
+                    v-if="activity.achievement"
+                    :label="activity.achievement"
+                  /><span v-else>Student volunteer</span>
                 </td>
               </tr>
               <tr>
@@ -250,6 +339,7 @@ onBeforeUnmount(() => {
             </tbody>
           </table>
         </div>
+        <ExperienceLog />
         <div id="writeups" class="writeups">
           <div>
             <p class="eyebrow">Investigation notes</p>
@@ -322,12 +412,7 @@ onBeforeUnmount(() => {
           Vue for worship slides.<br />Python for source review.
         </h2>
       </div>
-      <dl class="skills-list">
-        <div v-for="skill in appliedSkills" :key="skill.tools">
-          <dt>{{ skill.tools }}</dt>
-          <dd>{{ skill.context }}</dd>
-        </div>
-      </dl>
+      <SkillGraph v-inview />
       <div class="courses">
         <h3>Coursework</h3>
         <ul>
@@ -376,6 +461,7 @@ onBeforeUnmount(() => {
       </div>
     </section>
   </main>
+  <div class="wrap flag-wrap"><FlagHunt /></div>
   <footer class="site-footer wrap">
     <p>Jan Sultan / {{ profile.location }}</p>
     <a href="#hero">Back to the top</a><span class="metadata">jan.sec</span>
