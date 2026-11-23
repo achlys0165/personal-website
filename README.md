@@ -1,6 +1,6 @@
 # Jan Sultan / jan.sec
 
-An editorial portfolio for a Cybersecurity & Forensics student at Asia Pacific College. Selected work leads with the TOP Church worship presentation system and WebCTF-Auto, followed by JSP Engineering Services and StudyHub.
+A dark, evidence-led portfolio for a Cybersecurity & Forensics student at Asia Pacific College. Selected work leads with the TOP Church worship presentation system and WebCTF-Auto, followed by JSP Engineering Services and StudyHub.
 
 ## Run and verify
 
@@ -20,18 +20,23 @@ Development runs on port 3000. The production build uses Vue's server renderer a
 
 The GitHub repository is `achlys0165/personal-website`. Vercel uses the repository root, Node 22, `npm ci`, `npm run build`, and `dist/`, as configured in `vercel.json`. The canonical URL is `https://jan-sec.vercel.app/`. Update it in `index.html`, `public/robots.txt`, and `public/sitemap.xml` if the domain changes.
 
-The visible contact section uses a mailto link and copy-email button. It needs no service keys. Visitors can read the entire page and use email and project links without JavaScript. Public Sans and Newsreader Latin WOFF2 subsets are self-hosted with their licenses in `public/fonts/`. The 1200 x 630 social card is `public/og-image.png`.
+The visible contact section uses a mailto link and copy-email button. It needs no service keys. Visitors can read the entire page and use email and project links without JavaScript. Public Sans and Space Grotesk Latin WOFF2 subsets are self-hosted with their licenses in `public/fonts/`. Moving connections and the event marquee pause off-screen. Mobile and reduced-motion modes use static alternatives. There is no canvas/WebGL runtime, video download, or extra animation library. The 1200 x 630 social card is `public/og-image.png`.
 
 ## Content and source
 
 - `src/App.vue`: page structure, approved hero/About prose, navigation, and copy-email interaction.
 - `src/caseStudies.ts`: four case studies, scope diagrams, project-specific skills, and explicitly marked missing evidence.
-- `src/profile.ts`: existing profile, project scope, repository links, competition results, and courses. Historical records are retained; only the new editorial views are rendered.
-- `src/index.css`: paper/ink/rust tokens, self-hosted fonts, responsive layout, focus and reduced-motion styles.
+- `src/profile.ts`: existing profile, project scope, repository links, competition results, and courses. Historical records are retained; the current visual views are rendered.
+- `src/index.css`: charcoal/amber/steel tokens, self-hosted fonts, responsive layout, focus and reduced-motion styles.
+- `src/components/EvidenceBoard.vue`: draggable HTML/SVG project board with keyboard movement and ordinary anchor links.
+- `src/components/SkillGraph.vue`: tool-to-project connections and contextual project links.
+- `src/components/ExperienceLog.vue`: scrollable work history with a keyboard-accessible range scrubber.
+- `src/components/RankLabel.vue` and `FlagHunt.vue`: CTF result animation and a local, source-discoverable flag challenge.
+- `src/visualState.ts`: tested node boundaries and flag checking.
 - `src/entry-server.ts` and `scripts/prerender.mjs`: build-time HTML rendering.
 - `index.html`: metadata, canonical URL, structured data, and image cards.
 
-Case-study diagrams describe supplied project scope. They are not screenshots or measured proof of deployment. Existing source links are preserved; unknown public links are visibly marked as pending.
+The framed case-study diagrams describe supplied project scope; screenshot and recording slots are explicitly marked pending. They are not screenshots or measured proof of deployment. Existing source links are preserved; unknown public links are visibly marked as pending.
 
 ## Outstanding evidence and questions
 
@@ -50,15 +55,15 @@ Every visible placeholder is listed below. Replace it only with Jan's supplied i
 
 No project metrics, testimonials, certification IDs, team sizes, or unverified live links have been added.
 
-## Redesign verification
+## Dark redesign verification
 
 Checked on 24 November 2026 against the local production build, using headless Edge:
 
-- Lighthouse 12.8.2: performance 100, accessibility 100, SEO 100 for both simulated mobile and desktop.
+- Lighthouse 12.8.2: mobile performance 99, accessibility 100, SEO 100; desktop performance 100, accessibility 100, SEO 100.
 - No horizontal overflow at 360, 390, 768, 1024, and 1440 pixels; mobile navigation and clipboard copying passed.
 - All four case studies and the mailto link remain readable with JavaScript disabled. Hydration produced no browser errors.
-- Keyboard focus, skip link, reduced motion, and font loading passed the browser checks. The generated social image is 1200 x 630.
-- All 11 retained contact API tests passed. Dependency audit after the build-tool updates reported zero advisories.
+- Board dragging and keyboard movement, project-linked skills, the timeline scrubber, marquee pause, correct/incorrect flag submissions, off-screen motion pausing, reduced motion, and font loading passed the browser checks. The generated social image is 1200 x 630.
+- All 13 tests passed, including the retained API tests and the new board-boundary/flag tests. Dependency audit after the build-tool updates reported zero advisories.
 
 These are local lab results, not a claim about real-user connection speeds or a complete manual WCAG conformance audit.
 
