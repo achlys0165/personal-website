@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "scripts": {
-    "build": "node ./node_modules/vue-tsc/bin/vue-tsc.js --noEmit && node ./node_modules/vite/bin/vite.js build",
+    "build": "node ./node_modules/vue-tsc/bin/vue-tsc.js --noEmit && node ./node_modules/vite/bin/vite.js build && node ./node_modules/vite/bin/vite.js build --ssr src/entry-server.ts --outDir .prerender && node scripts/prerender.mjs",
     "preview": "node ./node_modules/vite/bin/vite.js preview",
     "dev": "node ./node_modules/vite/bin/vite.js --port=3000 --host=0.0.0.0",
     "lint": "node ./node_modules/vue-tsc/bin/vue-tsc.js --noEmit",
@@ -13,12 +13,13 @@
     "@vitejs/plugin-vue": "^5.2.4",
     "tsx": "^4.23.15",
     "typescript": "~5.8.3",
-    "vite": "^6.4.1",
-    "vue-tsc": "^2.2.12"
+    "vite": "^6.4.6",
+    "vue-tsc": "^3.3.14"
   },
   "dependencies": {
     "@upstash/ratelimit": "^2.2.0",
     "@upstash/redis": "^1.39.0",
+    "@vue/server-renderer": "^3.5.43",
     "vue": "^3.5.43"
   },
   "type": "module",

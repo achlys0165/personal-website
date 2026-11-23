@@ -1,79 +1,69 @@
-# Jan Sultan’s Portfolio
+# Jan Sultan / jan.sec
 
-A Vue 3 portfolio built with Vite and TypeScript, featuring Jan’s cybersecurity, AI automation, and web application projects. Includes category filters, an interactive profile terminal, project overviews, mobile navigation, and an optional Konami animation.
+An editorial portfolio for a Cybersecurity & Forensics student at Asia Pacific College. Selected work leads with the TOP Church worship presentation system and WebCTF-Auto, followed by JSP Engineering Services and StudyHub.
 
-## Run locally
+## Run and verify
 
-Requires Node.js 22.
+Node.js 22 is required.
 
 ```sh
 npm ci
 npm run dev
-```
-
-The development site runs at http://localhost:3000.
-
-```sh
-npm run lint
 npm run build
+npm test
 npm run preview
 ```
 
-The production site is generated in `dist/`.
+Development runs on port 3000. The production build uses Vue's server renderer at build time to put all portfolio content in `dist/index.html`, then hydrates the few client interactions. No runtime rendering service is needed. The build asserts that the main content and contact link exist in the generated HTML and that published copy contains no em dashes.
 
-## Deploy to Vercel
+## Deployment
 
-1. Import `achlys0165/personal-website` into Vercel as a new project.
-2. Use the repository root as the root directory and `main` as the production branch.
-3. Deploy. The included `vercel.json` selects Vite, installs with `npm ci`, builds with `npm run build`, and publishes `dist/`. Node.js 22 is set in `package.json`.
+The GitHub repository is `achlys0165/personal-website`. Vercel uses the repository root, Node 22, `npm ci`, `npm run build`, and `dist/`, as configured in `vercel.json`. The canonical URL is `https://jan-sec.vercel.app/`. Update it in `index.html`, `public/robots.txt`, and `public/sitemap.xml` if the domain changes.
 
-Navigation uses section anchors such as `/#experience`, so no route rewrites are needed. The contact form requires the service configuration below.
+The visible contact section uses a mailto link and copy-email button. It needs no service keys. Visitors can read the entire page and use email and project links without JavaScript. Public Sans and Newsreader Latin WOFF2 subsets are self-hosted with their licenses in `public/fonts/`. The 1200 x 630 social card is `public/og-image.png`.
 
-Vercel can deploy subsequent pushes to the connected production branch automatically. See [Vercel’s Vite documentation](https://vercel.com/docs/frameworks/frontend/vite).
+## Content and source
 
-## Edit the portfolio
+- `src/App.vue`: page structure, approved hero/About prose, navigation, and copy-email interaction.
+- `src/caseStudies.ts`: four case studies, scope diagrams, project-specific skills, and explicitly marked missing evidence.
+- `src/profile.ts`: existing profile, project scope, repository links, competition results, and courses. Historical records are retained; only the new editorial views are rendered.
+- `src/index.css`: paper/ink/rust tokens, self-hosted fonts, responsive layout, focus and reduced-motion styles.
+- `src/entry-server.ts` and `scripts/prerender.mjs`: build-time HTML rendering.
+- `index.html`: metadata, canonical URL, structured data, and image cards.
 
-- `src/App.vue`: Page content and Vue interactions.
-- `src/profile.ts`: Public profile, real projects, skills, experience, education, and courses. Expand the project summaries and scope here when documentation is ready.
-- `src/index.css`: Shared styles and responsive layouts.
-- `index.html`: Site metadata and Vue entry point.
+Case-study diagrams describe supplied project scope. They are not screenshots or measured proof of deployment. Existing source links are preserved; unknown public links are visibly marked as pending.
 
-The contact form sends a JSON request to `/api/contact`, a Vercel Node.js function. Messages are sent through Resend to `jansultan670@gmail.com`; the visitor’s address is used only as Reply-To. Direct email links and email copying are also available.
+## Outstanding evidence and questions
 
-## Configure email and spam protection
+Every visible placeholder is listed below. Replace it only with Jan's supplied information.
 
-1. In [Resend](https://resend.com/docs/dashboard/domains/introduction), verify a sender domain and create a sending API key. The verified address is the sender; Jan’s Gmail remains the recipient. Cloudflare Turnstile does not require moving your website’s DNS to Cloudflare.
-2. Create a managed [Cloudflare Turnstile widget](https://developers.cloudflare.com/turnstile/get-started/) and add your actual production hostname. Copy its public site key and private secret key.
-3. Create an [Upstash Redis database](https://upstash.com/docs/redis/overall/getstarted), then copy its REST URL and REST token. One shared database provides the rate limit across Vercel function instances.
-4. In Vercel → Project → Settings → Environment Variables, add the following for Production. Use separate credentials and exact allowed hostnames if enabling Preview or Development.
-
-| Variable | Value |
+| Area | Placeholder / question |
 | --- | --- |
-| `VITE_TURNSTILE_SITE_KEY` | Public Turnstile site key; the only credential included in the browser build |
-| `TURNSTILE_SECRET_KEY` | Private Turnstile secret |
-| `RESEND_API_KEY` | Private sending API key |
-| `CONTACT_FROM_EMAIL` | Verified sender, such as `Jan <contact@your-domain.com>` |
-| `CONTACT_ALLOWED_ORIGINS` | Exact site origins, e.g. `https://your-site.vercel.app,https://your-domain.com`; no wildcards or paths |
-| `UPSTASH_REDIS_REST_URL` | Redis REST endpoint |
-| `UPSTASH_REDIS_REST_TOKEN` | Private Redis REST token |
+| TOP Church worship system | Approved screenshots, public repository or live link if shareable, tradeoffs behind the web/desktop split, and usage/outcome evidence. What did you decide, and what changed for the team? |
+| WebCTF-Auto | Project date, public link if shareable, sample Markdown/JSON report, a worked challenge example, findings, and a decision note about automation versus manual review. Which example can be published? |
+| JSP Engineering Services | Approved screenshots, public live URL if one exists, consultation-flow decision note, client feedback and launch evidence. What information can the client allow you to share? |
+| StudyHub | Project date, screenshots, demo/live URL if available, handling/evaluation of generated material and malformed responses, and a documented example. What was your specific decision and learning? |
+| Music Ministry Management / NFC attendance | Detailed case studies are pending documentation. Supply role, decisions, evidence, dates, and shareable assets before expanding them. |
+| Hack the Beat | Competition date. |
+| JISSA-APC membership | Membership dates. |
+| Writeups | Article links/content. The section is a structure for challenge context, investigation steps, evidence, and lessons; it contains no invented article titles. |
 
-5. Redeploy after saving the variables. Vite reads the public site key during the build. Submit one real message and confirm it arrives in Jan’s inbox; check Resend’s delivery status if it does not.
+No project metrics, testimonials, certification IDs, team sizes, or unverified live links have been added.
 
-Never put private credentials in a `VITE_` variable or commit them. `.env.example` contains names only; actual `.env` files are ignored. The form stays disabled when its public site key is missing, and the API refuses submissions when server settings are incomplete.
+## Redesign verification
 
-Each IP may make 3 valid-format attempts per 10-minute sliding window. Invalid or expired Turnstile tokens also consume an attempt. The limit uses an HMAC of the Vercel edge IP rather than storing the raw IP in Redis. Responses above the limit use HTTP 429 and `Retry-After`; the form displays a wait time. Redis errors or timeouts block sending rather than bypassing the limit.
+Checked on 24 November 2026 against the local production build, using headless Edge:
 
-The API also validates the origin, Turnstile hostname and `contact` action, field lengths, body size, and a hidden bot field. It uses a fixed recipient and plain-text email to prevent visitor-controlled recipients or HTML. Secret keys, token contents, and messages are not logged. Resend and Cloudflare receive the data needed to provide their respective services.
+- Lighthouse 12.8.2: performance 100, accessibility 100, SEO 100 for both simulated mobile and desktop.
+- No horizontal overflow at 360, 390, 768, 1024, and 1440 pixels; mobile navigation and clipboard copying passed.
+- All four case studies and the mailto link remain readable with JavaScript disabled. Hydration produced no browser errors.
+- Keyboard focus, skip link, reduced motion, and font loading passed the browser checks. The generated social image is 1200 x 630.
+- All 11 retained contact API tests passed. Dependency audit after the build-tool updates reported zero advisories.
 
-## Verify locally
+These are local lab results, not a claim about real-user connection speeds or a complete manual WCAG conformance audit.
 
-```sh
-npm test
-npm run build
-```
+## Retained contact API
 
-Tests mock provider responses and cover accepted messages, input validation, bot checks, rate limits, service failures, and missing configuration. They do not send real email or prove live provider credentials work.
+`api/contact.ts`, `server/contact.ts`, and their 11 tests retain the previously implemented Resend/Turnstile/Upstash endpoint. The current UI does not call it. It remains closed to submissions until configured, and its validations and shared rate limit are unchanged.
 
-`npm run dev` and `npm run preview` serve the frontend only. To exercise the Vercel function locally, use `npx vercel dev` with a local ignored environment file, allow your localhost origin, and authorize the localhost hostname in your development Turnstile widget. Use development credentials, and keep Cloudflare test keys out of Production. The API expects `x-vercel-forwarded-for`, which Vercel sets at its edge; a bare frontend server cannot emulate production email delivery.
-
-Profile details come from Jan’s resume and portfolio brief. Project entries describe known work without invented achievements, deployment claims, or documentation links. Source links are shown only for known repositories.
+If a verified form is restored later, set `RESEND_API_KEY`, a verified `CONTACT_FROM_EMAIL`, `TURNSTILE_SECRET_KEY`, exact `CONTACT_ALLOWED_ORIGINS`, `UPSTASH_REDIS_REST_URL`, and `UPSTASH_REDIS_REST_TOKEN` privately in Vercel. The endpoint expects a Turnstile token with action `contact`, a matching hostname, and Vercel's edge IP header. `.env.example` documents the configuration names; never commit private keys. The current mailto contact does not depend on this setup.

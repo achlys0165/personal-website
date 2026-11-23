@@ -1,5 +1,6 @@
-import { createApp } from 'vue';
-import App from './App.vue';
-import './index.css';
+import { createApp, createSSRApp } from "vue";
+import App from "./App.vue";
+import "./index.css";
 
-createApp(App).mount('#app');
+const prerendered = !!document.getElementById("app")?.childElementCount;
+(prerendered ? createSSRApp(App) : createApp(App)).mount("#app");
