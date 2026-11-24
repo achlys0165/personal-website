@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { acceptsFlag, constrainNode, portfolioFlag } from "../src/visualState";
+import {
+  acceptsFlag,
+  constrainNode,
+  portfolioFlag,
+  heroFlag,
+} from "../src/visualState";
 
 test("board nodes stay inside the reachable board area after pointer or keyboard movement", () => {
   assert.deepEqual(constrainNode(-50, -20), { x: 20, y: 16 });
@@ -10,6 +15,9 @@ test("board nodes stay inside the reachable board area after pointer or keyboard
 
 test("flag submission accepts the discoverable flag and rejects incorrect or injected answers", () => {
   assert.equal(acceptsFlag(portfolioFlag), true);
+  assert.equal(acceptsFlag(heroFlag), true);
+  assert.equal(acceptsFlag("  " + heroFlag + "\n"), true);
+  assert.equal(acceptsFlag("<script>" + heroFlag + "</script>"), false);
   assert.equal(acceptsFlag(`  ${portfolioFlag}\n`), true);
   for (const input of [
     "",

@@ -6,5 +6,5 @@ export function constrainNode(x: number, y: number) {
 }
 
 export function acceptsFlag(value: string) {
-  return value.trim() === portfolioFlag;
+  return value.trim() === portfolioFlag || value.trim() === heroFlag;
 }

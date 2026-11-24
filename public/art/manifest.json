@@ -1,0 +1,338 @@
+{
+  "style": "Graphite titanium, cobalt-blue glass, amber key light and blue rim light. Original generated illustrations.",
+  "source": "OpenAI image_gen; generated for this portfolio, no externally sourced stock assets.",
+  "assets": [
+    {
+      "name": "shield-hero",
+      "status": "final",
+      "placeholder": false,
+      "source": "Original AI-generated illustration, not a screenshot or credential.",
+      "master": {
+        "filename": "assets/artwork/shield-hero.png",
+        "width": 1280,
+        "height": 1280,
+        "bytes": 1008062,
+        "format": "PNG",
+        "transparent": true
+      },
+      "variants": [
+        {
+          "filename": "/art/shield-hero-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 40596,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/shield-hero-960.webp",
+          "width": 960,
+          "height": 960,
+          "bytes": 74672,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/shield-hero-1280.webp",
+          "width": 1280,
+          "height": 1280,
+          "bytes": 110592,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "name": "padlock-key",
+      "status": "final",
+      "placeholder": false,
+      "source": "Original AI-generated illustration, not a screenshot or credential.",
+      "master": {
+        "filename": "assets/artwork/padlock-key.png",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 567687,
+        "format": "PNG",
+        "transparent": true
+      },
+      "variants": [
+        {
+          "filename": "/art/padlock-key-160.webp",
+          "width": 160,
+          "height": 160,
+          "bytes": 6562,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/padlock-key-320.webp",
+          "width": 320,
+          "height": 320,
+          "bytes": 16072,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/padlock-key-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 41502,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "name": "network-globe",
+      "status": "final",
+      "placeholder": false,
+      "source": "Original AI-generated illustration, not a screenshot or credential.",
+      "master": {
+        "filename": "assets/artwork/network-globe.png",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 580378,
+        "format": "PNG",
+        "transparent": true
+      },
+      "variants": [
+        {
+          "filename": "/art/network-globe-160.webp",
+          "width": 160,
+          "height": 160,
+          "bytes": 6818,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/network-globe-320.webp",
+          "width": 320,
+          "height": 320,
+          "bytes": 17216,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/network-globe-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 45978,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "name": "code-laptop",
+      "status": "final",
+      "placeholder": false,
+      "source": "Original AI-generated illustration, not a screenshot or credential.",
+      "master": {
+        "filename": "assets/artwork/code-laptop.png",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 594163,
+        "format": "PNG",
+        "transparent": true
+      },
+      "variants": [
+        {
+          "filename": "/art/code-laptop-160.webp",
+          "width": 160,
+          "height": 160,
+          "bytes": 5984,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/code-laptop-320.webp",
+          "width": 320,
+          "height": 320,
+          "bytes": 15248,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/code-laptop-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 40452,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "name": "ctf-flag",
+      "status": "final",
+      "placeholder": false,
+      "source": "Original AI-generated illustration, not a screenshot or credential.",
+      "master": {
+        "filename": "assets/artwork/ctf-flag.png",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 288448,
+        "format": "PNG",
+        "transparent": true
+      },
+      "variants": [
+        {
+          "filename": "/art/ctf-flag-160.webp",
+          "width": 160,
+          "height": 160,
+          "bytes": 4174,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/ctf-flag-320.webp",
+          "width": 320,
+          "height": 320,
+          "bytes": 9188,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/ctf-flag-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 23246,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "name": "ai-chip",
+      "status": "final",
+      "placeholder": false,
+      "source": "Original AI-generated illustration, not a screenshot or credential.",
+      "master": {
+        "filename": "assets/artwork/ai-chip.png",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 632571,
+        "format": "PNG",
+        "transparent": true
+      },
+      "variants": [
+        {
+          "filename": "/art/ai-chip-160.webp",
+          "width": 160,
+          "height": 160,
+          "bytes": 6554,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/ai-chip-320.webp",
+          "width": 320,
+          "height": 320,
+          "bytes": 17006,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/ai-chip-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 45346,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        }
+      ]
+    },
+    {
+      "name": "glass-cube",
+      "status": "final",
+      "placeholder": false,
+      "source": "Original AI-generated supporting illustration.",
+      "master": {
+        "filename": "assets/artwork/glass-cube.png",
+        "width": 1024,
+        "height": 1024,
+        "bytes": 309879,
+        "format": "PNG",
+        "transparent": true
+      },
+      "variants": [
+        {
+          "filename": "/art/glass-cube-160.webp",
+          "width": 160,
+          "height": 160,
+          "bytes": 3552,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/glass-cube-320.webp",
+          "width": 320,
+          "height": 320,
+          "bytes": 8270,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        },
+        {
+          "filename": "/art/glass-cube-640.webp",
+          "width": 640,
+          "height": 640,
+          "bytes": 21986,
+          "format": "WebP",
+          "transparent": true,
+          "status": "final",
+          "placeholder": false
+        }
+      ]
+    }
+  ],
+  "socialCard": {
+    "filename": "/og-image.png",
+    "width": 1200,
+    "height": 630,
+    "bytes": 326740,
+    "format": "PNG",
+    "transparent": false,
+    "status": "final",
+    "placeholder": false
+  }
+}

@@ -17,7 +17,7 @@ export const caseStudies = [
       "The system includes generated slides, a slide editor, and scheduled setlists. Usage and outcome evidence is pending.",
     flow: ["Tagged lyrics", "Generated slides", "Desktop presentation"],
     caption:
-      "Scope diagram · Vue web app and Tauri desktop client. Project screenshots pending.",
+      "Vue web app and Tauri desktop client. Project screenshots pending.",
   },
   {
     project: projects.find((project) => project.id === "webctf-auto")!,
@@ -34,7 +34,7 @@ export const caseStudies = [
     outcome:
       "The tool produces reports from challenge source. A worked example and findings are pending documentation.",
     flow: ["Challenge source", "First-pass review", "Markdown + JSON"],
-    caption: "Scope diagram · authorized CTF practice. Sample report pending.",
+    caption: "Authorized CTF practice. Sample report pending.",
   },
   {
     project: projects.find((project) => project.id === "jsp")!,
@@ -52,7 +52,7 @@ export const caseStudies = [
       "The project includes consultation forms and automated email notifications. Client feedback and launch evidence are pending.",
     flow: ["Consultation form", "Request details", "Email notification"],
     caption:
-      "Scope diagram · client website and consultation workflow. Approved screenshots pending.",
+      "Client website and consultation workflow. Approved screenshots pending.",
   },
   {
     project: projects.find((project) => project.id === "studyhub")!,
@@ -70,7 +70,7 @@ export const caseStudies = [
       "The app generates flashcards, quizzes, and key points. A documented example and evaluation are pending.",
     flow: ["Learning materials", "Gemini generation", "Study exercises"],
     caption:
-      "Scope diagram · AI-assisted study workflow. Project screenshots pending.",
+      "AI-assisted study workflow. Project screenshots pending.",
   },
 ];
 
