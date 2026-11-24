@@ -20,7 +20,7 @@ Development runs on port 3000. The production build uses Vue's server renderer a
 
 The GitHub repository is `achlys0165/personal-website`. Vercel uses the repository root, Node 22, `npm ci`, `npm run build`, and `dist/`, as configured in `vercel.json`. The canonical URL is `https://jan-sec.vercel.app/`. Update it in `index.html`, `public/robots.txt`, and `public/sitemap.xml` if the domain changes.
 
-The visible contact section uses a mailto link and copy-email button. It needs no service keys. Visitors can read the entire page and use email and project links without JavaScript. Public Sans and Space Grotesk Latin WOFF2 subsets are self-hosted with their licenses in `public/fonts/`. Moving connections and the event marquee pause off-screen. Mobile and reduced-motion modes use static alternatives. There is no canvas/WebGL runtime, video download, or extra animation library. The 1200 x 630 social card is `public/og-image.png`.
+The visible contact section uses a mailto link and copy-email button. It needs no service keys. Visitors can read the entire page and use email and project links without JavaScript. Public Sans and Space Grotesk Latin WOFF2 subsets are self-hosted with their licenses in `public/fonts/`. Moving connections and the event marquee pause off-screen. Mobile and reduced-motion modes use static alternatives. Only the right-hand hero progressively loads TresJS/Three.js after first paint; the rest of the page keeps its existing implementation. There is no video download or post-processing library. The 1200 x 630 social card is `public/og-image.png`.
 
 ## Content and source
 
@@ -55,7 +55,7 @@ Every visible placeholder is listed below. Replace it only with Jan's supplied i
 
 No project metrics, testimonials, certification IDs, team sizes, or unverified live links have been added.
 
-## Dark redesign verification
+## Dark redesign baseline verification
 
 Checked on 24 November 2026 against the local production build, using headless Edge:
 
@@ -72,3 +72,13 @@ These are local lab results, not a claim about real-user connection speeds or a 
 `api/contact.ts`, `server/contact.ts`, and their 11 tests retain the previously implemented Resend/Turnstile/Upstash endpoint. The current UI does not call it. It remains closed to submissions until configured, and its validations and shared rate limit are unchanged.
 
 If a verified form is restored later, set `RESEND_API_KEY`, a verified `CONTACT_FROM_EMAIL`, `TURNSTILE_SECRET_KEY`, exact `CONTACT_ALLOWED_ORIGINS`, `UPSTASH_REDIS_REST_URL`, and `UPSTASH_REDIS_REST_TOKEN` privately in Vercel. The endpoint expects a Turnstile token with action `contact`, a matching hostname, and Vercel's edge IP header. `.env.example` documents the configuration names; never commit private keys. The current mailto contact does not depend on this setup.
+
+## Evidence constellation verification
+
+The hero-only constellation update retains semantic HTML for all eight subjects and a static fallback. Cards use HTML labels and explicit image/logo placeholders. Solid connections describe documented project/tool usage; dashed annotations describe the known built-for and competition relationships. No connection implies that WebCTF-Auto was used in the winning CTF team.
+
+- Local mobile Lighthouse with 3D loaded: performance 96, accessibility 100, SEO 100; LCP 1.6 seconds and total blocking time 200 ms.
+- Lazy scene code: approximately 22.4 KB gzipped beyond the separate Three.js engine chunk. Desktop DPR is capped at 2; light/mobile mode uses up to 1.25, fewer particles, and no amber glow sprites.
+- Rendering stops off-screen, when the tab is hidden, or when motion is paused. Reduced motion renders static frames on interaction only.
+- Browser checks cover first-paint lazy loading, keyboard details and Escape focus restoration, hover relations, frame pausing, mobile layout, context loss, no-WebGL, failed-import fallback, and JavaScript-disabled content.
+- All 15 tests passed. The rest of the page, copy, metadata, and sharing image are unchanged by this update.
