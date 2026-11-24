@@ -20,7 +20,7 @@ Development runs on port 3000. The production build uses Vue's server renderer a
 
 The GitHub repository is `achlys0165/personal-website`. Vercel uses the repository root, Node 22, `npm ci`, `npm run build`, and `dist/`, as configured in `vercel.json`. The canonical URL is `https://jan-sec.vercel.app/`. Update it in `index.html`, `public/robots.txt`, and `public/sitemap.xml` if the domain changes.
 
-The visible contact section uses a mailto link and copy-email button. It needs no service keys. Visitors can read the entire page and use email and project links without JavaScript. Public Sans and Space Grotesk Latin WOFF2 subsets are self-hosted with their licenses in `public/fonts/`. Moving connections and the event marquee pause off-screen. Mobile and reduced-motion modes use static alternatives. Only the right-hand hero progressively loads TresJS/Three.js after first paint; the rest of the page keeps its existing implementation. There is no video download or post-processing library. The 1200 x 630 social card is `public/og-image.png`.
+The visible contact section uses a mailto link and copy-email button. It needs no service keys. Visitors can read the entire page and use email and project links without JavaScript. Public Sans and Space Grotesk Latin WOFF2 subsets are self-hosted with their licenses in `public/fonts/`. The hero padlock and the evidence map below Selected work progressively load TresJS/Three.js after first paint when visible. Both scenes and the event marquee pause off-screen. Mobile uses lighter scenes; reduced motion uses static frames on interaction. There is no video download or post-processing library. The 1200 x 630 social card is `public/og-image.png`.
 
 ## Content and source
 
@@ -28,7 +28,9 @@ The visible contact section uses a mailto link and copy-email button. It needs n
 - `src/caseStudies.ts`: four case studies, scope diagrams, project-specific skills, and explicitly marked missing evidence.
 - `src/profile.ts`: existing profile, project scope, repository links, competition results, and courses. Historical records are retained; the current visual views are rendered.
 - `src/index.css`: charcoal/amber/steel tokens, self-hosted fonts, responsive layout, focus and reduced-motion styles.
-- `src/components/EvidenceBoard.vue`: draggable HTML/SVG project board with keyboard movement and ordinary anchor links.
+- `src/components/HeroLock.vue` and `src/components/lock/`: procedural metal padlock, shader lens cutaway, opening shackle, SVG fallback, and keyboard/touch controls. No external model assets.
+- `src/lockState.ts`: supplied hero flag, bounded drag tilt, and unlock easing.
+- `src/components/EvidenceBoard.vue` and `src/components/evidence/`: evidence constellation below Selected work, with semantic HTML cards, static fallback, and keyboard details.
 - `src/components/SkillGraph.vue`: tool-to-project connections and contextual project links.
 - `src/components/ExperienceLog.vue`: scrollable work history with a keyboard-accessible range scrubber.
 - `src/components/RankLabel.vue` and `FlagHunt.vue`: CTF result animation and a local, source-discoverable flag challenge.
@@ -73,12 +75,23 @@ These are local lab results, not a claim about real-user connection speeds or a 
 
 If a verified form is restored later, set `RESEND_API_KEY`, a verified `CONTACT_FROM_EMAIL`, `TURNSTILE_SECRET_KEY`, exact `CONTACT_ALLOWED_ORIGINS`, `UPSTASH_REDIS_REST_URL`, and `UPSTASH_REDIS_REST_TOKEN` privately in Vercel. The endpoint expects a Turnstile token with action `contact`, a matching hostname, and Vercel's edge IP header. `.env.example` documents the configuration names; never commit private keys. The current mailto contact does not depend on this setup.
 
-## Evidence constellation verification
+## Previous evidence constellation verification
 
-The hero-only constellation update retains semantic HTML for all eight subjects and a static fallback. Cards use HTML labels and explicit image/logo placeholders. Solid connections describe documented project/tool usage; dashed annotations describe the known built-for and competition relationships. No connection implies that WebCTF-Auto was used in the winning CTF team.
+The previous hero constellation update retained semantic HTML for all eight subjects and a static fallback. This component now appears below Selected work. Cards use HTML labels and explicit image/logo placeholders. Solid connections describe documented project/tool usage; dashed annotations describe the known built-for and competition relationships. No connection implies that WebCTF-Auto was used in the winning CTF team.
 
 - Local mobile Lighthouse with 3D loaded: performance 96, accessibility 100, SEO 100; LCP 1.6 seconds and total blocking time 200 ms.
 - Lazy scene code: approximately 22.4 KB gzipped beyond the separate Three.js engine chunk. Desktop DPR is capped at 2; light/mobile mode uses up to 1.25, fewer particles, and no amber glow sprites.
 - Rendering stops off-screen, when the tab is hidden, or when motion is paused. Reduced motion renders static frames on interaction only.
 - Browser checks cover first-paint lazy loading, keyboard details and Escape focus restoration, hover relations, frame pausing, mobile layout, context loss, no-WebGL, failed-import fallback, and JavaScript-disabled content.
 - All 15 tests passed. The rest of the page, copy, metadata, and sharing image are unchanged by this update.
+
+## Padlock hero verification
+
+The hero now uses a procedural padlock with an amber circuit cutaway lens, an opening shackle, and Jan's supplied flag rendered as HTML with a contact link. The original eight-node constellation is preserved below Selected work. No external model or texture asset is required; the restrained glow uses a generated texture, with no post-processing pass.
+
+- Local mobile Lighthouse with the 3D scene enabled: performance 81, accessibility 100, SEO 100; LCP 1.6 seconds, total blocking time 770 ms, and no layout shift.
+- Lazy padlock code and shared TresJS runtime total approximately 23.9 KB gzipped beyond the separate Three.js engine. Desktop DPR is capped at 2; mobile uses up to 1.25, simpler lighting, fewer particles, and no glow sprite.
+- Browser checks cover the actual shader lens, Enter/Escape and focus restoration, exact flag text, tap/drag, pause/resume, hidden-tab and off-screen pausing, reduced motion, widths 360 through 1440, WebGL context loss, no-WebGL fallback, and JavaScript-disabled content. No browser errors were observed.
+- The production build and all 18 tests pass. Existing case studies, profile copy, metadata, and sharing assets are unchanged.
+
+Scores are local lab measurements, not real-device performance guarantees or a full manual accessibility audit.

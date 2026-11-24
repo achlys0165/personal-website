@@ -3,6 +3,7 @@ import { onBeforeUnmount, ref, type ObjectDirective } from "vue";
 import { courses, profile, securityActivities } from "./profile";
 import { caseStudies } from "./caseStudies";
 import EvidenceBoard from "./components/EvidenceBoard.vue";
+import HeroLock from "./components/HeroLock.vue";
 import SkillGraph from "./components/SkillGraph.vue";
 import ExperienceLog from "./components/ExperienceLog.vue";
 import FlagHunt from "./components/FlagHunt.vue";
@@ -123,7 +124,7 @@ onBeforeUnmount(() => {
             </div>
           </div>
         </div>
-        <EvidenceBoard v-inview :data-evidence="portfolioFlag" />
+        <HeroLock />
       </div>
       <div class="hero-index metadata">
         <span>A record of software built and challenges investigated.</span
@@ -262,6 +263,21 @@ onBeforeUnmount(() => {
           documentation.
         </p>
       </div>
+    </section>
+
+    <section
+      id="evidence-map"
+      class="wrap evidence-map-section"
+      aria-labelledby="evidence-map-title"
+    >
+      <div>
+        <p class="eyebrow">Project / skills map</p>
+        <h2 id="evidence-map-title">Connected evidence.</h2>
+        <p class="map-intro">
+          Explore the connections between my projects, tools, and CTF result.
+        </p>
+      </div>
+      <EvidenceBoard v-inview :data-evidence="portfolioFlag" />
     </section>
 
     <section
@@ -467,3 +483,24 @@ onBeforeUnmount(() => {
     <a href="#hero">Back to the top</a><span class="metadata">jan.sec</span>
   </footer>
 </template>
+
+<style scoped>
+.evidence-map-section {
+  display: grid;
+  grid-template-columns: 1fr 1.04fr;
+  gap: 60px;
+  align-items: center;
+  padding-bottom: 80px;
+}
+.map-intro {
+  max-width: 410px;
+  color: var(--muted);
+  margin-top: 25px;
+}
+@media (max-width: 900px) {
+  .evidence-map-section {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+</style>
