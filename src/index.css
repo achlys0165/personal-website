@@ -11,13 +11,13 @@
   font-display: swap;
 }
 :root {
-  --base: #101419;
-  --surface: #171e27;
-  --raised: #202936;
+  --base: #17161d;
+  --surface: #201e29;
+  --raised: #2a2734;
   --ink: #f0f3f5;
-  --muted: #aeb8c5;
+  --muted: #beb8c8;
   --accent: #e9ae45;
-  --rule: #34404e;
+  --rule: #494252;
   --sans: "Public Sans", Arial, sans-serif;
   --heading: "Space Grotesk", Arial, sans-serif;
   --mono: ui-monospace, Consolas, monospace;

@@ -3,7 +3,7 @@ import { onBeforeUnmount, ref, type ObjectDirective } from "vue";
 import { courses, profile, securityActivities } from "./profile";
 import { caseStudies } from "./caseStudies";
 import EvidenceBoard from "./components/EvidenceBoard.vue";
-import HeroLock from "./components/HeroLock.vue";
+import HeroDesk from "./components/HeroDesk.vue";
 import SkillGraph from "./components/SkillGraph.vue";
 import ExperienceLog from "./components/ExperienceLog.vue";
 import FlagHunt from "./components/FlagHunt.vue";
@@ -124,7 +124,7 @@ onBeforeUnmount(() => {
             </div>
           </div>
         </div>
-        <HeroLock />
+        <HeroDesk />
       </div>
       <div class="hero-index metadata">
         <span>A record of software built and challenges investigated.</span

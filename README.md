@@ -20,21 +20,21 @@ Development runs on port 3000. The production build uses Vue's server renderer a
 
 The GitHub repository is `achlys0165/personal-website`. Vercel uses the repository root, Node 22, `npm ci`, `npm run build`, and `dist/`, as configured in `vercel.json`. The canonical URL is `https://jan-sec.vercel.app/`. Update it in `index.html`, `public/robots.txt`, and `public/sitemap.xml` if the domain changes.
 
-The visible contact section uses a mailto link and copy-email button. It needs no service keys. Visitors can read the entire page and use email and project links without JavaScript. Public Sans and Space Grotesk Latin WOFF2 subsets are self-hosted with their licenses in `public/fonts/`. The hero padlock and the evidence map below Selected work progressively load TresJS/Three.js after first paint when visible. Both scenes and the event marquee pause off-screen. Mobile uses lighter scenes; reduced motion uses static frames on interaction. There is no video download or post-processing library. The 1200 x 630 social card is `public/og-image.png`.
+The visible contact section uses a mailto link and copy-email button. It needs no service keys. Visitors can read the entire page and use email and project links without JavaScript. Public Sans and Space Grotesk Latin WOFF2 subsets are self-hosted with their licenses in `public/fonts/`. The hero uses Jan's supplied desk animation, with a first-paint poster and media loaded only when visible and motion is allowed. Playback pauses off-screen and in hidden tabs. Reduced motion and JavaScript-disabled pages show the poster. Only the evidence map below Selected work progressively loads TresJS/Three.js; the hero needs no 3D runtime. The 1200 x 630 social card is `public/og-image.png`.
 
 ## Content and source
 
 - `src/App.vue`: page structure, approved hero/About prose, navigation, and copy-email interaction.
 - `src/caseStudies.ts`: four case studies, scope diagrams, project-specific skills, and explicitly marked missing evidence.
 - `src/profile.ts`: existing profile, project scope, repository links, competition results, and courses. Historical records are retained; the current visual views are rendered.
-- `src/index.css`: charcoal/amber/steel tokens, self-hosted fonts, responsive layout, focus and reduced-motion styles.
-- `src/components/HeroLock.vue` and `src/components/lock/`: procedural metal padlock, shader lens cutaway, opening shackle, SVG fallback, and keyboard/touch controls. No external model assets.
-- `src/lockState.ts`: supplied hero flag, bounded drag tilt, and unlock easing.
+- `src/index.css`: dusk grey and warm amber tokens, self-hosted fonts, responsive layout, focus and reduced-motion styles.
+- `src/components/HeroDesk.vue`: responsive desk animation, poster, video/WebP fallback, monitor work panel, keyboard flag, mug contact link, and motion controls.
+- `public/media/`: compressed derivatives of Jan's supplied `create_a_background_for_my_per.mp4`. The steady opening 2.5 seconds keep object hotspots aligned, without the later camera changes and floating menu. Video is 640 x 360 at 12 fps with audio removed; the animated WebP fallback is 8 fps. The original private download is not included.
 - `src/components/EvidenceBoard.vue` and `src/components/evidence/`: evidence constellation below Selected work, with semantic HTML cards, static fallback, and keyboard details.
 - `src/components/SkillGraph.vue`: tool-to-project connections and contextual project links.
 - `src/components/ExperienceLog.vue`: scrollable work history with a keyboard-accessible range scrubber.
 - `src/components/RankLabel.vue` and `FlagHunt.vue`: CTF result animation and a local, source-discoverable flag challenge.
-- `src/visualState.ts`: tested node boundaries and flag checking.
+- `src/visualState.ts`: tested node boundaries, flag checking, and Jan's exact hero flag.
 - `src/entry-server.ts` and `scripts/prerender.mjs`: build-time HTML rendering.
 - `index.html`: metadata, canonical URL, structured data, and image cards.
 
@@ -85,13 +85,13 @@ The previous hero constellation update retained semantic HTML for all eight subj
 - Browser checks cover first-paint lazy loading, keyboard details and Escape focus restoration, hover relations, frame pausing, mobile layout, context loss, no-WebGL, failed-import fallback, and JavaScript-disabled content.
 - All 15 tests passed. The rest of the page, copy, metadata, and sharing image are unchanged by this update.
 
-## Padlock hero verification
+## Animated desk hero verification
 
-The hero now uses a procedural padlock with an amber circuit cutaway lens, an opening shackle, and Jan's supplied flag rendered as HTML with a contact link. The original eight-node constellation is preserved below Selected work. No external model or texture asset is required; the restrained glow uses a generated texture, with no post-processing pass.
+The desk replaces the padlock without changing hero copy, buttons, or the eight-node evidence map below Selected work. The monitor opens the four existing case studies; the keyboard reveals `flag{you_found_me_lets_talk}` as real HTML; the mug links to contact. The scene sits below the hero text on mobile. The surrounding palette shifts slightly to dusk grey while retaining warm amber.
 
-- Local mobile Lighthouse with the 3D scene enabled: performance 81, accessibility 100, SEO 100; LCP 1.6 seconds, total blocking time 770 ms, and no layout shift.
-- Lazy padlock code and shared TresJS runtime total approximately 23.9 KB gzipped beyond the separate Three.js engine. Desktop DPR is capped at 2; mobile uses up to 1.25, simpler lighting, fewer particles, and no glow sprite.
-- Browser checks cover the actual shader lens, Enter/Escape and focus restoration, exact flag text, tap/drag, pause/resume, hidden-tab and off-screen pausing, reduced motion, widths 360 through 1440, WebGL context loss, no-WebGL fallback, and JavaScript-disabled content. No browser errors were observed.
-- The production build and all 18 tests pass. Existing case studies, profile copy, metadata, and sharing assets are unchanged.
+- Local mobile Lighthouse: performance 99, accessibility 100, SEO 100; LCP 1.9 seconds and total blocking time 10 ms.
+- Media sizes: WebM 128,617 bytes, MP4 151,201 bytes, animated WebP 440,178 bytes, static poster 47,614 bytes. Browsers choose a supported video source; the animated WebP is requested only when both video formats fail. Media uses pixelated interpolation and a maximum native display width of 640 pixels.
+- Browser checks cover actual video playback, forced MP4 and WebP fallback, monitor hover/click, keyboard Enter/Space/Escape and focus restoration, the exact flag, mug contact navigation, pause/resume, hidden-tab and off-screen pausing, reduced motion without animation downloads, widths 360 through 1440, and JavaScript-disabled content. No browser errors were observed.
+- The production build and all 15 retained tests pass. Obsolete padlock code and its three tests were removed. Case studies, profile copy, navigation, and sharing assets are preserved; browser theme color matches the adjusted palette.
 
 Scores are local lab measurements, not real-device performance guarantees or a full manual accessibility audit.
